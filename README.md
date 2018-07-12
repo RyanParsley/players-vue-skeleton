@@ -27,7 +27,7 @@ Read all of the instructions for great success.
 ## Setup
 - git clone this repository to your favorite directory
 - npm install
-- npm serve
+- npm run serve
 
 ## Success
 This test uses cypress to test user interactions, it requires that certain text, css elements, or urls be present.
