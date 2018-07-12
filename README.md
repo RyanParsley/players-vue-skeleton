@@ -1,4 +1,4 @@
-# Alchemy React Test
+# Alchemy Vue Test
 
 ## Background
 The engineering team at Alchemy has built an (imaginary) game management platform.
