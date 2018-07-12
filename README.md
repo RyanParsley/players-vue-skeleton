@@ -43,7 +43,7 @@ After all tests pass, run the app in dev directly against the API url and QA the
 
 ## Bonus
 Other factors that we take into account in the assessment.
-- Experience in the stack. (Things don't have to be perfect, if this is your first react experience. We understand)
+- Experience in the stack. (Things don't have to be perfect, if this is your first vue experience. We understand)
 - UX/UI (Color schemes, an eye for layout and design, animations and transitions. Build this project as if someone would use it.)
 - Tests (The project has high level end-to-end tests but unit and component level tests are up to you. Automated tests are extremely important.)
 - Honest feedback on this assessment.
