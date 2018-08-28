@@ -23,20 +23,20 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add("login", () => {
   cy.server();
   cy.route(
-    'POST',
-    'https://players-api.developer.alchemy.codes/api/login',
-    'fixture:login.json',
+    "POST",
+    "https://players-api.developer.alchemy.codes/api/login",
+    "fixture:login.json"
   );
   cy.route(
-    'GET',
-    'https://players-api.developer.alchemy.codes/api/players',
-    'fixture:getPlayers.json',
+    "GET",
+    "https://players-api.developer.alchemy.codes/api/players",
+    "fixture:getPlayers.json"
   );
-  cy.visit('/login');
-  cy.get('#email').type('billybob@example.com');
-  cy.get('#password').type('abc123');
-  cy.get('#login').click();
+  cy.visit("/login");
+  cy.get("#email").type("billybob@example.com");
+  cy.get("#password").type("abc123");
+  cy.get("#login").click();
 });
