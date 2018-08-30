@@ -26,7 +26,7 @@ describe("Register Page", () => {
     cy.get("#password").type("billybob@example.com");
     cy.get("#confirmPassword").type("billybob@example.com");
     cy.get("#register").click();
-    cy.url().should("eq", "http://localhost:3000/roster");
+    cy.url().should("eq", "http://localhost:8080/roster");
     cy.contains("Roster");
   });
 });

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
+import api from "./api";
+import router from "./router";
 
 Vue.use(Vuex);
 
@@ -9,6 +10,7 @@ export default new Vuex.Store({
     appTitle: "Who can hire ryan The fastest!",
     user: null,
     isLoggedIn: !!localStorage.getItem("token"),
+    token: localStorage.getItem("token") || "",
     players: [],
     error: null,
     success: null,
@@ -37,30 +39,51 @@ export default new Vuex.Store({
     setLoading(state, payload) {
       state.loading = payload;
     },
-    setPlayers(state, payload) {
-      state.players = Object.keys(payload).map(function(key) {
-        return { key: payload[key].key, value: payload[key].value };
-      });
-    },
     removePlayer(state, payload) {
-      console.log("removePlayer: ", payload);
+      let players = state.players;
+      players.splice(players.indexOf(payload), 1);
     },
     pushPlayer(state, payload) {
-      console.log("pushPlayer: ", payload);
+      state.players.push(payload);
       state.success = true;
+    },
+    setPlayers(state, payload) {
+      state.players = payload;
     }
   },
   actions: {
+    signup({ commit }, creds) {
+      commit("login");
+      api
+        .post("user", {
+          first_name: creds.first_name,
+          last_name: creds.last_name,
+          email: creds.email,
+          password: creds.password,
+          confirm_password: creds.confirm_password
+        })
+        .then(function(response) {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          commit("loginSuccess", response.data.user);
+          router.push("/roster");
+        })
+        .catch(function(error) {
+          commit("loginFail", error.response.data.error.message);
+        });
+    },
     login({ commit }, creds) {
       commit("login");
-      axios
-        .post("https://players-api.developer.alchemy.codes/api/login", {
+      api
+        .post("login", {
           email: creds.email,
           password: creds.password
         })
         .then(function(response) {
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
           commit("loginSuccess", response.data.user);
+          router.push("/roster");
         })
         .catch(function(error) {
           commit("loginFail", error.response.data.error.message);
@@ -71,8 +94,31 @@ export default new Vuex.Store({
       commit("setUser", null);
       commit("logout");
     },
+    getPlayers: function({ commit }) {
+      api.get("players").then(function(response) {
+        commit("setPlayers", response.data.players);
+      });
+    },
     addPlayer: function({ commit }, payload) {
-      commit("pushPlayer", payload);
+      api
+        .post("players", payload)
+        .then(function(response) {
+          if (response.data.success) {
+            commit("pushPlayer", payload[0]);
+            router.push("/roster");
+          }
+        })
+        .catch(function(error) {
+          commit("loginFail", error.response.data.error.message);
+        });
+    },
+    deletePlayer: function({ commit }, payload) {
+      api.delete("players/" + payload.id).then(function(response) {
+        if (response.success) {
+          commit("removePlayer", payload);
+          console.log("delete was successful");
+        }
+      });
     }
   },
   getters: {
@@ -90,6 +136,15 @@ export default new Vuex.Store({
     },
     getLoading(state) {
       return state.loading;
+    },
+    getPlayerById: state => id => {
+      const fallback = {
+        first_name: "",
+        last_name: "",
+        rating: 0,
+        handedness: ""
+      };
+      return state.players.find(player => player.id === id) || fallback;
     }
   }
 });

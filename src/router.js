@@ -1,15 +1,18 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import Home from "./views/Home.vue";
-import Register from "./views/Register.vue";
-import Login from "./views/Login.vue";
-import Players from "./views/Players.vue";
-import NotFound from "./views/NotFound.vue";
+import Home from "./views/Home";
+import Register from "./views/Register";
+import Login from "./views/Login";
+import Player from "./views/Player";
+import PlayerNew from "./views/PlayerNew";
+import PlayerUpdate from "./views/PlayerUpdate";
+import NotFound from "./views/NotFound";
 
 Vue.use(Router);
 
 const router = new Router({
+  mode: "history",
   routes: [
     {
       path: "/",
@@ -19,26 +22,28 @@ const router = new Router({
     {
       path: "/register",
       name: "register",
-      component: Register,
-      meta: {
-        requiresAnon: true
-      }
+      component: Register
     },
     {
       path: "/login",
       name: "login",
-      component: Login,
-      meta: {
-        requiresAnon: true
-      }
+      component: Login
     },
     {
-      path: "/players",
-      name: "players",
-      component: Players,
-      meta: {
-        requiresAuth: true
-      }
+      path: "/player",
+      name: "player",
+      alias: "/roster",
+      component: Player
+    },
+    {
+      path: "/player/new",
+      name: "playerNew",
+      component: PlayerNew
+    },
+    {
+      path: "/player/:id",
+      name: "playerUpdate",
+      component: PlayerUpdate
     },
     {
       path: "*",

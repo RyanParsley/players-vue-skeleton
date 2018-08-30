@@ -30,7 +30,7 @@ describe("Add player page", () => {
     cy.get("#rating").type("10");
     cy.get("#handedness").select("Right");
     cy.get("#create").click();
-    cy.url().should("eq", "http://localhost:3000/roster");
+    cy.url().should("eq", "http://localhost:8080/roster");
     cy.contains("Tom");
   });
 });

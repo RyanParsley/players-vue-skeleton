@@ -21,7 +21,7 @@
         placeholder="password"
         v-model="password"
         />
-      <input type="submit" value="Sign In" :disabled="loading"/>
+      <input id="login" type="submit" value="Sign In" :disabled="loading"/>
     </form>
   </div>
 </template>

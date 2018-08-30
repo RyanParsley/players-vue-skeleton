@@ -1,7 +1,24 @@
 <template>
   <div class="register">
     <h1>Register</h1>
-    <form @submit.prevent="userSignUp">
+    <div class="error" v-if="this.password === this.confirm_password">
+      {{ comparePassword  }}
+    </div>
+    <form @submit.prevent="signup">
+      <label for="first_name">First Name</label>
+      <input
+        name="firstName"
+        id="firstName"
+        type="text"
+        v-model="first_name"
+        />
+      <label for="last_name">Last Name</label>
+      <input
+        name="lastName"
+        id="lastName"
+        type="text"
+        v-model="last_name"
+        />
       <label for="email">Email</label>
       <input
         name="email"
@@ -16,18 +33,16 @@
         id="password"
         type="password"
         v-model="password"
-        autocomplete='new-password'
         required/>
       <label for="confirmPassword">Confirm Password</label>
       <input
         name="confirmPassword"
         id="confirmPassword"
         type="password"
-        v-model="passwordConfirm"
-        autocomplete='new-password'
+        v-model="confirm_password"
         :rules="[comparePasswords]"
         />
-      <input type="submit" value="Sign Up" :disabled="loading"/>
+      <input id="register" type="submit" value="Sign Up" :disabled="loading"/>
     </form>
   </div>
 </template>
@@ -35,15 +50,17 @@
 export default {
   data() {
     return {
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
-      passwordConfirm: "",
+      confirm_password: "",
       alert: false
     };
   },
   computed: {
     comparePasswords() {
-      return this.password === this.passwordConfirm
+      return this.password === this.confirm_password
         ? true
         : "Passwords don't match";
     },
@@ -52,13 +69,16 @@ export default {
     }
   },
   methods: {
-    userSignUp() {
+    signup() {
       if (this.comparePasswords !== true) {
         return;
       }
-      this.$store.dispatch("userSignUp", {
+      this.$store.dispatch("signup", {
+        first_name: this.first_name,
+        last_name: this.last_name,
         email: this.email,
-        password: this.password
+        password: this.password,
+        confirm_password: this.confirm_password
       });
     },
     error() {

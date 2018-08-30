@@ -7,6 +7,6 @@ describe("Login Page", () => {
 
   it("Accepts valid email and password", () => {
     cy.login();
-    cy.url().should("eq", "http://localhost:3000/roster");
+    cy.url().should("eq", "http://localhost:8080/roster");
   });
 });
