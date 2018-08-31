@@ -41,7 +41,7 @@ export default {
 ul {
   list-style: none;
   padding: 0;
-  margin:0;
+  margin: 0;
 }
 li {
   border: solid #333 1px;
@@ -52,7 +52,7 @@ li {
   border-radius: 3px;
   text-align: left;
   .delete {
-    float:right;
+    float: right;
   }
 }
 </style>
